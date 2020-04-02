@@ -24,6 +24,7 @@ public class Seance {
 	private Film film;
 	private LocalDateTime date;
 	private List<Assister> clients = new ArrayList<>();
+	@DBRef
 	private Salle salle;
 	private String type;
 	

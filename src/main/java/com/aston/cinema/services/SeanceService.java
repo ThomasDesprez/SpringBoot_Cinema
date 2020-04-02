@@ -1,10 +1,9 @@
 package com.aston.cinema.services;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.aston.cinema.models.Assister;
 import com.aston.cinema.models.Film;
@@ -41,7 +40,11 @@ public interface SeanceService {
 
 	public List<Seance> findAllByNom(String nom);
 
-	public void saveAssister(String id, String uid);
+	public Seance saveAssister(String id, String uid);
+	
+	public List<Seance> findAllByFilmId(String id);
+
+	public int findRecetteBySeance(Seance seance);
 	
 
 }

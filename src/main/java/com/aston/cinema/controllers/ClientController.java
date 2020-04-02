@@ -19,7 +19,7 @@ import com.aston.cinema.services.ClientService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("Clients")
+@RequestMapping("clients")
 public class ClientController {
 
 	@Autowired

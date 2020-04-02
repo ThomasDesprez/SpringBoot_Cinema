@@ -16,7 +16,7 @@ public class Assister {
 	
 	@Id
 	private String id;
-	private float prix;
+	private float prix = 10;
 	@DBRef
 	private Client client;
 }

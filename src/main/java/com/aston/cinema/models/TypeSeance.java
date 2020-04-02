@@ -1,26 +1,26 @@
 package com.aston.cinema.models;
 
 
-enum TypeSeance {
+public enum TypeSeance {
 
 		IMAX("IMAX",6),
 		QUATREDX("4DX",8),
 		TROISD("3D",3);
 	 
-	    private String url;
+	    private String type;
 	    private float prix;
 	    
 	    TypeSeance(String url, float prix) {
-	    	this.url = url;
+	    	this.type = url;
 	    	this.prix = prix;
 	    }
 	    
-	    public String getUrl() {
-	    	return this.url;
+	    public String getType() {
+	    	return this.type;
 	    	
 	    }
 	    
-	    public double getPrix() {
+	    public float getPrix() {
 	    	return this.prix;
 	    }
 }

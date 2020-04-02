@@ -1,12 +1,15 @@
 package com.aston.cinema.services.impl;
 
 import java.util.List;
+
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.aston.cinema.models.Film;
+import com.aston.cinema.models.Seance;
 import com.aston.cinema.repositories.FilmRepository;
 import com.aston.cinema.services.FilmService;
 
@@ -15,6 +18,9 @@ public class FilmServiceImpl implements FilmService {
 
 	@Autowired
 	private FilmRepository filmRepo;
+
+	@Autowired
+	private SeanceServiceImpl serviceSeance;
 
 	@Override
 	public List<Film> findAll() {
@@ -53,8 +59,13 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public int findRecetteById(String id) {
-		// TODO Auto-generated method stub
-		return 0;
+		int recette = 0;
+		Optional<Film> optFilm = this.findById(id);
+		if (optFilm.isPresent()) {
+			Film film = optFilm.get();
+			Stream<Seance> seances = serviceSeance.findAllByFilmId(film.getId()).stream();
+			recette = seances.mapToInt(seance -> this.serviceSeance.findRecetteBySeance(seance)).sum();
+		}
+		return recette;
 	}
-
 }

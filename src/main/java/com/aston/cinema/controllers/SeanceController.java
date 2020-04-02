@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,18 +67,24 @@ public class SeanceController {
 		return this.seanceService.findPlacesById(id);
 	}
 
-	@GetMapping("horaire/{min}/{max}")
-	public List<Seance> findAllByHoraires(@PathVariable LocalDateTime début, @PathVariable LocalDateTime fin) {
+	@GetMapping("horaire/{début}/{fin}")
+	public List<Seance> findAllByHoraires(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime début
+			, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fin) {
 		return this.seanceService.findAllByHoraires(début, fin);
 	}
 
-	@GetMapping("film/{nom}")
-	public List<Seance> findAllByNom(String nom) {
-		return this.seanceService.findAllByNom(nom);
-	}
+//	@GetMapping("film/titre/{nom}")
+//	public List<Seance> findAllByNom(String nom) {
+//		return this.seanceService.findAllByNom(nom);
+//	}
 
 	@PostMapping("{id}/assister/{uid}")
 	public void saveAssister(@PathVariable String id, @PathVariable String uid) {
 		this.seanceService.saveAssister(id,uid);
+	}
+	
+	@GetMapping("film/{id}")
+	public List<Seance> findAllByFilmId(@PathVariable String id) {
+		return this.seanceService.findAllByFilmId(id);
 	}
 }

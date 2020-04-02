@@ -26,7 +26,7 @@ public class FilmController {
 	private FilmService filmService;
 
 	@GetMapping("")
-	public List<Film> findAll() {
+	public List<Film> findAll(@RequestBody String s) {
 		return this.filmService.findAll();
 	}
 
