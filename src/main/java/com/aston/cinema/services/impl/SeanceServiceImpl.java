@@ -2,7 +2,6 @@ package com.aston.cinema.services.impl;
 
 import java.time.LocalDateTime;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -11,11 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.aston.cinema.dto.CinemaDTO;
+import com.aston.cinema.dto.SeanceDTO;
 import com.aston.cinema.models.Assister;
 import com.aston.cinema.models.Film;
 import com.aston.cinema.models.Salle;
 import com.aston.cinema.models.Seance;
+import com.aston.cinema.models.SeanceLight;
 import com.aston.cinema.repositories.SeanceRepository;
 import com.aston.cinema.services.SeanceService;
 
@@ -55,10 +55,6 @@ public class SeanceServiceImpl implements SeanceService {
 
 	@Override
 	public Seance save(Seance seance) {
-		CinemaDTO cinemaDTO = new CinemaDTO();
-		cinemaDTO.setCinema(seance.getSalle().getCinema());
-		cinemaDTO.getSalles().add(seance.getSalle());
-		this.cinemaService.save(cinemaDTO);
 		return this.seancerepo.save(seance);
 	}
 
@@ -74,7 +70,7 @@ public class SeanceServiceImpl implements SeanceService {
 
 	@Override
 	public List<Assister> findAllClients() {
-		return null;
+		return this.seancerepo.findByClients();
 	}
 
 	@Override
@@ -97,8 +93,13 @@ public class SeanceServiceImpl implements SeanceService {
 	}
 
 	@Override
-	public int findPlacesById(String id) {
-		return 0;
+	public int findNombrePlacesById(String id) {
+		int nbPlaces = 0;
+		Optional<Seance> s = this.findById(id);
+		if (s.isPresent()) {
+			nbPlaces = s.get().getSalle().getPlace();
+		}
+		return nbPlaces;
 	}
 
 	@Override
@@ -106,21 +107,19 @@ public class SeanceServiceImpl implements SeanceService {
 		return this.seancerepo.findAllByDateBetween(début, fin);
 	}
 
-	@Override
-	public List<Seance> findAllByNom(String nom) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
-	public Seance saveAssister(String id, String uid) {
+	public SeanceLight saveAssister(String id, String uid) {
 		Optional<Seance> Optseance = this.findById(id);
 		if (Optseance.isPresent()) {
 			Seance seance = Optseance.get();
-			Assister client = this.assisterService.createAssister(seance.getType(), uid);
+
+			if (seance.getClients().size() >= seance.getSalle().getPlace())
+				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "La séance n°" + id + " est pleine!");
+			Assister client = this.assisterService.createAssister(seance, uid);
 			seance.getClients().add(client);
 			this.seancerepo.save(seance);
-			return seance;
+			return new SeanceLight(seance, client);
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La séance n'existe pas !");
 		}
@@ -139,5 +138,10 @@ public class SeanceServiceImpl implements SeanceService {
 	@Override
 	public List<Seance> findAllByFilmId(String id) {
 		return this.seancerepo.findAllByFilmId(id);
+	}
+
+	@Override
+	public List<Seance> findAllByCriterias(SeanceDTO criteres) {
+		return this.seancerepo.findAllByCriterias(criteres);
 	}
 }

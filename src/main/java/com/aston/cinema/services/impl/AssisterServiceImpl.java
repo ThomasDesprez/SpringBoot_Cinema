@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.aston.cinema.models.Assister;
 import com.aston.cinema.models.Client;
+import com.aston.cinema.models.Seance;
 import com.aston.cinema.repositories.AssisterRepository;
 import com.aston.cinema.models.TypeSeance;
 
@@ -31,18 +32,21 @@ public class AssisterServiceImpl {
 	 * @param clientid ID du client qui assiste à la séance
 	 * @return Assister contenant le prix du ticket et le client
 	 */
-	public Assister createAssister(String type, String clientid) {
+	public Assister createAssister(Seance seance, String clientid) {
 		float remise = 0;
 		Client c = this.findByClient(clientid);
-		if(Period.between(LocalDate.now(), c.getNaissance()).getYears() < 10)
+		int age = Period.between(LocalDate.now(), c.getNaissance()).getYears();
+		if(age > seance.getFilm().getAgeLimite())
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN,"L'âge est inférieur à l'âge limite du film !");
+		if(age < 10)
 			remise = 4;
 		else if(c.isEtudiant()) {
 			remise = 2;
 		}
 		Assister assister = new Assister(null,prix_ticket-remise,c);
-		for(TypeSeance seance : TypeSeance.values()) {
-			if(seance.getType().equalsIgnoreCase(type))
-				assister.setPrix(assister.getPrix() + seance.getPrix());
+		for(TypeSeance typeseance : TypeSeance.values()) {
+			if(typeseance.getType().equalsIgnoreCase(seance.getType()))
+				assister.setPrix(assister.getPrix() + typeseance.getPrix());
 		}
 
 		return this.assisterRepo.insert(assister);

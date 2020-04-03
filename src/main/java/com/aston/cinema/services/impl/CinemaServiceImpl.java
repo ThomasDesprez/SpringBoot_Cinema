@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.aston.cinema.dto.CinemaDTO;
+import com.aston.cinema.models.Cinema;
 import com.aston.cinema.repositories.CinemaRepository;
 import com.aston.cinema.repositories.SalleRepository;
 import com.aston.cinema.services.CinemaService;
@@ -19,8 +20,12 @@ public class CinemaServiceImpl implements CinemaService {
 
 	@Override
 	public CinemaDTO save(CinemaDTO cinemadto) {
-		this.cinerepo.save(cinemadto.getCinema());
-		cinemadto.getSalles().forEach(salle -> this.sallerepo.save(salle));
+		Cinema cine = cinemadto.getCinema();
+		this.cinerepo.save(cine);
+		cinemadto.getSalles().forEach(salle -> {
+			salle.setCinema(cine);
+			this.sallerepo.save(salle);
+		});
 		return cinemadto;
 	}
 }

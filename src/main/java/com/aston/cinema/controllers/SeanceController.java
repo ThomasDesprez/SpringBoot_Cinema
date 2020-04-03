@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aston.cinema.dto.SeanceDTO;
+import com.aston.cinema.models.Assister;
 import com.aston.cinema.models.Seance;
+import com.aston.cinema.models.SeanceLight;
 import com.aston.cinema.services.SeanceService;
 
 @RestController
@@ -64,7 +67,7 @@ public class SeanceController {
 
 	@GetMapping("{id}/places")
 	public int findPlacesById(@PathVariable String id) {
-		return this.seanceService.findPlacesById(id);
+		return this.seanceService.findNombrePlacesById(id);
 	}
 
 	@GetMapping("horaire/{début}/{fin}")
@@ -73,18 +76,23 @@ public class SeanceController {
 		return this.seanceService.findAllByHoraires(début, fin);
 	}
 
-//	@GetMapping("film/titre/{nom}")
-//	public List<Seance> findAllByNom(String nom) {
-//		return this.seanceService.findAllByNom(nom);
-//	}
-
 	@PostMapping("{id}/assister/{uid}")
-	public void saveAssister(@PathVariable String id, @PathVariable String uid) {
-		this.seanceService.saveAssister(id,uid);
+	public SeanceLight saveAssister(@PathVariable String id, @PathVariable String uid) {
+		return this.seanceService.saveAssister(id,uid);
 	}
 	
 	@GetMapping("film/{id}")
 	public List<Seance> findAllByFilmId(@PathVariable String id) {
 		return this.seanceService.findAllByFilmId(id);
+	}
+	
+	@GetMapping("clients")
+	public List<Assister> findAllClients() {
+		return this.seanceService.findAllClients();
+	}
+	
+	@GetMapping("criteres")
+	public List<Seance> findAllByCriterias(@RequestBody SeanceDTO criteres) {
+		return this.seanceService.findAllByCriterias(criteres);
 	}
 }

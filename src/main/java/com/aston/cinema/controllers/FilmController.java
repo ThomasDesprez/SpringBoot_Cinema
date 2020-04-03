@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.aston.cinema.models.Commentaire;
 import com.aston.cinema.models.Film;
 import com.aston.cinema.services.FilmService;
 
@@ -26,7 +27,7 @@ public class FilmController {
 	private FilmService filmService;
 
 	@GetMapping("")
-	public List<Film> findAll(@RequestBody String s) {
+	public List<Film> findAll() {
 		return this.filmService.findAll();
 	}
 
@@ -66,10 +67,23 @@ public class FilmController {
 
 	}
 
+//	@GetMapping("titre/{titre}")
+//	public Film findByTitre(@PathVariable String titre) {
+//		return this.filmService.findByTitre(titre);
+//	}
+//	
 	@GetMapping("titre/{titre}")
-	public Film findByTitre(@PathVariable String titre) {
-		return this.filmService.findByTitre(titre);
-
+	public List<Film> findByTitreLike(@PathVariable String titre) {
+		return this.filmService.findByTitreLike(titre);
 	}
 
+	@GetMapping("note/{id}")
+	public float getNote(@PathVariable String id) {
+		return this.filmService.getNote(id);
+	}
+	
+	@PostMapping("commentaire/{id}")
+	public Commentaire addCommentaire(@PathVariable String id,@RequestBody Commentaire commentaire) {
+		return this.filmService.addCommentaire(id,commentaire);
+	}
 }

@@ -3,6 +3,7 @@ package com.aston.cinema.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.aston.cinema.models.Commentaire;
 import com.aston.cinema.models.Film;
 
 public interface FilmService {
@@ -22,5 +23,11 @@ public interface FilmService {
 	public List<Film> findAllByGenre(String genre);
 
 	public int findRecetteById(String id);
+	
+	public List<Film> findByTitreLike(String titre);
+
+	public float getNote(String id);
+
+	public Commentaire addCommentaire(String id, Commentaire commentaire);
 	
 }

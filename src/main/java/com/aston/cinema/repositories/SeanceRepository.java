@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import com.aston.cinema.models.Assister;
 import com.aston.cinema.models.Film;
 import com.aston.cinema.models.Salle;
 import com.aston.cinema.models.Seance;
+import com.aston.cinema.repositories.custom.SeanceRepositoryCustom;
 
 
-public interface SeanceRepository extends MongoRepository<Seance, String> {
+public interface SeanceRepository extends MongoRepository<Seance, String>, SeanceRepositoryCustom {
 
 
 	public List<Seance> findAllByType(String type);
@@ -31,5 +33,11 @@ public interface SeanceRepository extends MongoRepository<Seance, String> {
 	public List<Seance> findAllByFilmId(String id); 
 	
 	public int findBySallePlace(Salle salle);
+	
+	public List<Assister> findByClients();
+
+	public int findSallePlaceById(String id);
+
+	public List<Seance> findByFilmTitreLike(String nom);
 	
 }

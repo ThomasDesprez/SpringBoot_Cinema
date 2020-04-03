@@ -5,10 +5,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.aston.cinema.dto.SeanceDTO;
 import com.aston.cinema.models.Assister;
 import com.aston.cinema.models.Film;
 import com.aston.cinema.models.Salle;
 import com.aston.cinema.models.Seance;
+import com.aston.cinema.models.SeanceLight;
 
 public interface SeanceService {
 
@@ -34,17 +36,17 @@ public interface SeanceService {
 	
 	public int findRecetteById(String id);
 	
-	public int findPlacesById(String id);
 
 	public List<Seance> findAllByHoraires(LocalDateTime début, LocalDateTime fin);
 
-	public List<Seance> findAllByNom(String nom);
-
-	public Seance saveAssister(String id, String uid);
+	public SeanceLight saveAssister(String id, String uid);
 	
 	public List<Seance> findAllByFilmId(String id);
 
 	public int findRecetteBySeance(Seance seance);
-	
 
+	public int findNombrePlacesById(String id);	
+	
+	public List<Seance> findAllByCriterias(SeanceDTO criteres);
+ 
 }

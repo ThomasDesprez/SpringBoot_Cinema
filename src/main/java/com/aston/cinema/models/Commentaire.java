@@ -1,7 +1,5 @@
 package com.aston.cinema.models;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,14 +12,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Film {
-
+public class Commentaire {
 	@Id
 	private String id;
-	private String titre;
-	private int duree;
-	private int ageLimite;
-	private String genre;
-	private String visa;
-	private List<Commentaire> commentaires = new ArrayList<>();
+	@DBRef
+	private Client client;
+	private String contenu;
+	private float note;
+
 }
