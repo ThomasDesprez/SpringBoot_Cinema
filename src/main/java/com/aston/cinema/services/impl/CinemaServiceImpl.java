@@ -18,6 +18,12 @@ public class CinemaServiceImpl implements CinemaService {
 	@Autowired
 	private SalleRepository sallerepo;
 
+	/**
+	 * Sauvegarde un cinéma et ses salles
+	 * 
+	 * @param cinemadto Cinema et salles a sauvegarder
+	 * @return Cinema et salles sauvegardés
+	 */
 	@Override
 	public CinemaDTO save(CinemaDTO cinemadto) {
 		Cinema cine = cinemadto.getCinema();

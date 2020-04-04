@@ -1,6 +1,7 @@
 package com.aston.cinema.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,7 +18,7 @@ public class SeanceDTO {
 
 	private String genreFilm;
 	private LocalDateTime début, fin;
-	private int age;
-	private List<String> typeSeance;
+	private int ageLimite;
+	private List<String> typeSeance = new ArrayList<String>();
 
 }

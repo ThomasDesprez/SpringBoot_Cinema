@@ -42,7 +42,6 @@ public class ClientServiceImpl implements ClientService {
 		return this.clientRepo.save(Client);
 	}
 
-
 	@Override
 	public List<Client> findByEtudiantIsTrue() {
 		return this.clientRepo.findByEtudiantIsTrue();

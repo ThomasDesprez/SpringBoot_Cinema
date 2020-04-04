@@ -20,22 +20,23 @@ public class SeanceRepositoryCustomImpl implements SeanceRepositoryCustom {
 
 	@Override
 	public List<Seance> findAllByCriterias(SeanceDTO criteres) {
-
+		System.out.println("TEST\n" + criteres.getGenreFilm() + ": " + criteres.getAgeLimite());
 		Query getFilms = new Query();
 		if (criteres.getGenreFilm() != null) {
 			getFilms.addCriteria(Criteria.where("genre").is(criteres.getGenreFilm()));
 		}
-		if (criteres.getAge() > 2) {
-			getFilms.addCriteria(Criteria.where("ageLimite").lte(criteres.getAge()));
+		if (criteres.getAgeLimite() > 2) {
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+			getFilms.addCriteria(Criteria.where("ageLimite").lte(criteres.getAgeLimite()));
 		}
 		List<Film> films = new ArrayList<Film>();
 		films = this.template.find(getFilms, Film.class);
 
 		Query query = new Query();
-		if(!criteres.getTypeSeance().isEmpty()) {
+		if (!criteres.getTypeSeance().isEmpty()) {
 			query.addCriteria(Criteria.where("type").in(criteres.getTypeSeance()));
 		}
-		if(!films.isEmpty()) {
+		if (!films.isEmpty()) {
 			query.addCriteria(Criteria.where("film").in(films));
 		}
 		if (criteres.getDébut() != null && criteres.getFin() != null) {
@@ -44,8 +45,3 @@ public class SeanceRepositoryCustomImpl implements SeanceRepositoryCustom {
 		return this.template.find(query, Seance.class);
 	}
 }
-
-//query = new Query();
-//Criteria first = Criteria.where("qty").elemMatch(Criteria.where("size").is("M").and("num").gt(50));
-//Criteria two = Criteria.where("qty").elemMatch(Criteria.where("num").is(100).and("color").is("green"));
-//query.addCriteria(new Criteria().andOperator(first, two));
