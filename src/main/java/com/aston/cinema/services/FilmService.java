@@ -22,12 +22,12 @@ public interface FilmService {
 	
 	public List<Film> findAllByGenre(String genre);
 
-	public int findRecetteById(String id);
+	public double findRecetteById(String id);
 	
 	public List<Film> findByTitreLike(String titre);
 
-	public float getNote(String id);
+	public double getNote(String id);
 
-	public Commentaire addCommentaire(String id, Commentaire commentaire);
+	public Commentaire addCommentaire(Commentaire commentaire);
 	
 }

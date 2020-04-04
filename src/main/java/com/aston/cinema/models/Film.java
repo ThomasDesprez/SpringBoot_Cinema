@@ -1,9 +1,6 @@
 package com.aston.cinema.models;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -23,5 +20,4 @@ public class Film {
 	private int ageLimite;
 	private String genre;
 	private String visa;
-	private List<Commentaire> commentaires = new ArrayList<>();
 }

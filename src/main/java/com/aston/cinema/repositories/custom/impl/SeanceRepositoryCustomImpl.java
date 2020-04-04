@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.aston.cinema.dto.SeanceDTO;
+import com.aston.cinema.models.Film;
 import com.aston.cinema.models.Seance;
 import com.aston.cinema.repositories.custom.SeanceRepositoryCustom;
 
@@ -20,19 +21,26 @@ public class SeanceRepositoryCustomImpl implements SeanceRepositoryCustom {
 	@Override
 	public List<Seance> findAllByCriterias(SeanceDTO criteres) {
 
-		List<Seance> seances = new ArrayList<Seance>();
-		Query query = new Query();
-		// where("").in(listOfAge)
+		Query getFilms = new Query();
 		if (criteres.getGenreFilm() != null) {
-			System.out.println("GENRE FILM : " + criteres.getGenreFilm());
-			// query.addCriteria(Criteria.where("film.Film.$id.genre").is(criteres.getGenreFilm()));
+			getFilms.addCriteria(Criteria.where("genre").is(criteres.getGenreFilm()));
+		}
+		if (criteres.getAge() > 2) {
+			getFilms.addCriteria(Criteria.where("ageLimite").lte(criteres.getAge()));
+		}
+		List<Film> films = new ArrayList<Film>();
+		films = this.template.find(getFilms, Film.class);
+
+		Query query = new Query();
+		if(!criteres.getTypeSeance().isEmpty()) {
+			query.addCriteria(Criteria.where("type").in(criteres.getTypeSeance()));
+		}
+		if(!films.isEmpty()) {
+			query.addCriteria(Criteria.where("film").in(films));
 		}
 		if (criteres.getDébut() != null && criteres.getFin() != null) {
-			query.addCriteria(Criteria.where("date").gte(criteres.getDébut()).lt(criteres.getFin()));
+			query.addCriteria(Criteria.where("date").gte(criteres.getDébut()).and("date").lt(criteres.getFin()));
 		}
-		System.out.println(query.fields().toString());
-		System.out.println(query.fields().getFieldsObject().toJson());
-
 		return this.template.find(query, Seance.class);
 	}
 }

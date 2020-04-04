@@ -26,12 +26,7 @@ public class SeanceServiceImpl implements SeanceService {
 	private SeanceRepository seancerepo;
 
 	@Autowired
-	private CinemaServiceImpl cinemaService;
-	@Autowired
 	private AssisterServiceImpl assisterService;
-
-	@Autowired
-	private FilmServiceImpl filmService;
 
 	@Override
 	public List<Seance> findAll() {
@@ -83,6 +78,12 @@ public class SeanceServiceImpl implements SeanceService {
 		return this.seancerepo.findAllByType(type);
 	}
 
+	/**
+	 * Permet d'obtenir la recette d'une séance
+	 * 
+	 * @param seance Seance dont on veut la recette
+	 * @return Recette de la séance
+	 */
 	@Override
 	public int findRecetteBySeance(Seance seance) {
 		int recetteSeance = 0;
@@ -92,6 +93,12 @@ public class SeanceServiceImpl implements SeanceService {
 		return recetteSeance;
 	}
 
+	/**
+	 * Retourne le nombre de places totales d'une séance
+	 * 
+	 * @param id Id de la séance
+	 * @return Nombre de places de la séance
+	 */
 	@Override
 	public int findNombrePlacesById(String id) {
 		int nbPlaces = 0;
@@ -102,12 +109,25 @@ public class SeanceServiceImpl implements SeanceService {
 		return nbPlaces;
 	}
 
+	/**
+	 * Retourne les séances comprises dans une plage horaire donnée
+	 * 
+	 * @param début date de début
+	 * @param fin   date de fin
+	 * @return List des séances dans la plage horaire
+	 */
 	@Override
 	public List<Seance> findAllByHoraires(LocalDateTime début, LocalDateTime fin) {
 		return this.seancerepo.findAllByDateBetween(début, fin);
 	}
 
-
+	/**
+	 * Ajoute un client à une séance
+	 * 
+	 * @param Id de la séance
+	 * @param Id du client
+	 * @return Compte-rendu de l'ajout à la séance
+	 */
 	@Override
 	public SeanceLight saveAssister(String id, String uid) {
 		Optional<Seance> Optseance = this.findById(id);
@@ -125,6 +145,12 @@ public class SeanceServiceImpl implements SeanceService {
 		}
 	}
 
+	/**
+	 * Permet d'obtenir la recette d'une séance
+	 * 
+	 * @param id id de la seance dont on veut la recette
+	 * @return Recette de la séance
+	 */
 	@Override
 	public int findRecetteById(String id) {
 		Optional<Seance> Optseance = this.findById(id);
@@ -135,11 +161,23 @@ public class SeanceServiceImpl implements SeanceService {
 		}
 	}
 
+	/**
+	 * Retourne les séances d'un film
+	 * 
+	 * @param id id du film
+	 * @return Liste des séances d'un film
+	 */
 	@Override
 	public List<Seance> findAllByFilmId(String id) {
 		return this.seancerepo.findAllByFilmId(id);
 	}
 
+	/**
+	 * Retourne les séances correspondants à certains critères
+	 * 
+	 * @param criteres Objet contenant les différents critères, null ou non
+	 * @return Liste des séances correspondants
+	 */
 	@Override
 	public List<Seance> findAllByCriterias(SeanceDTO criteres) {
 		return this.seancerepo.findAllByCriterias(criteres);

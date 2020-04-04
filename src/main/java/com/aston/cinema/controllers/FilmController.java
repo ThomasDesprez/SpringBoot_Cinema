@@ -50,40 +50,35 @@ public class FilmController {
 	public void delete(@RequestBody Film film) {
 		this.deleteById(film.getId());
 	}
-	
+
 	@GetMapping("{id}")
 	public Optional<Film> findById(@PathVariable String id) {
 		return this.filmService.findById(id);
 	}
 
 	@GetMapping("{id}/recette")
-	public int findRecetteById(@PathVariable String id) {
+	public double findRecetteById(@PathVariable String id) {
 		return this.filmService.findRecetteById(id);
 	}
-	
+
 	@GetMapping("genre/{genre}")
 	public List<Film> findAllByGenre(@PathVariable String genre) {
 		return this.filmService.findAllByGenre(genre);
 
 	}
 
-//	@GetMapping("titre/{titre}")
-//	public Film findByTitre(@PathVariable String titre) {
-//		return this.filmService.findByTitre(titre);
-//	}
-//	
 	@GetMapping("titre/{titre}")
 	public List<Film> findByTitreLike(@PathVariable String titre) {
 		return this.filmService.findByTitreLike(titre);
 	}
 
 	@GetMapping("note/{id}")
-	public float getNote(@PathVariable String id) {
+	public double getNote(@PathVariable String id) {
 		return this.filmService.getNote(id);
 	}
-	
-	@PostMapping("commentaire/{id}")
-	public Commentaire addCommentaire(@PathVariable String id,@RequestBody Commentaire commentaire) {
-		return this.filmService.addCommentaire(id,commentaire);
+
+	@PostMapping("commentaire")
+	public Commentaire addCommentaire(@RequestBody Commentaire commentaire) {
+		return this.filmService.addCommentaire(commentaire);
 	}
 }

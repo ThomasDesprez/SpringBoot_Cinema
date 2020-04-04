@@ -19,5 +19,6 @@ public class Commentaire {
 	private Client client;
 	private String contenu;
 	private float note;
-
+	@DBRef
+	private Film film;
 }
